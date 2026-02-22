@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Dev Mastery Roadmap — HTML › CSS › JS › React</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #07080F;
+    --surface:  #0E1019;
+    --border:   rgba(255,255,255,0.07);
+    --html:     #22C55E;
+    --html-dim: rgba(34,197,94,0.12);
+    --css:      #F97316;
+    --css-dim:  rgba(249,115,22,0.12);
+    --js:       #EAB308;
+    --js-dim:   rgba(234,179,8,0.12);
+    --react:    #38BDF8;
+    --react-dim:rgba(56,189,248,0.12);
+    --text:     #E2E8F0;
+    --muted:    #64748B;
+    --faint:    #1E293B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 72px 24px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -160px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, rgba(234,179,8,0.05) 35%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--react);
+    border: 1px solid rgba(56,189,248,0.3);
+    padding: 6px 16px; border-radius: 99px;
+    margin-bottom: 28px;
+    animation: fadeSlideDown 0.6s ease both;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--react);
+    box-shadow: 0 0 8px var(--react);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 68px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    animation: fadeSlideDown 0.7s 0.1s ease both;
+  }
+
+  .hero h1 span.html  { color: var(--html); }
+  .hero h1 span.css   { color: var(--css); }
+  .hero h1 span.js    { color: var(--js); }
+  .hero h1 span.react { color: var(--react); }
+
+  .hero p {
+    font-size: 17px; font-weight: 300;
+    color: var(--muted); max-width: 540px;
+    margin: 0 auto 40px;
+    animation: fadeSlideDown 0.7s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex; justify-content: center;
+    gap: 0; flex-wrap: wrap;
+    animation: fadeSlideDown 0.7s 0.3s ease both;
+  }
+
+  .stat {
+    padding: 14px 28px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat:first-child { border-radius: 12px 0 0 12px; }
+  .stat:last-child  { border-radius: 0 12px 12px 0; }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  /* ── PHASE ── */
+  .phase {
+    position: relative;
+    margin-bottom: 0;
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .phase.visible { opacity: 1; transform: translateY(0); }
+
+  /* Vertical connector line */
+  .phase-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .connector-line {
+    width: 2px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--c, #fff) 0%, transparent 100%);
+    opacity: 0.25;
+  }
+
+  .connector-arrow {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--c, #fff);
+    opacity: 0.25;
+  }
+
+  /* ── PHASE HEADER ── */
+  .phase-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--c);
+    border-radius: 16px;
+    background: var(--surface);
+    margin-bottom: 3px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .phase-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at left center, var(--cdim) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .phase-header:hover {
+    box-shadow: 0 0 0 1px var(--c), 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .phase-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px; font-weight: 800;
+    color: var(--c);
+    opacity: 0.18;
+    line-height: 1;
+    min-width: 52px;
+  }
+
+  .phase-title-block {}
+  .phase-title-block .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--c);
+    margin-bottom: 4px; display: block;
+  }
+  .phase-title-block h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .phase-title-block .subtitle {
+    font-size: 13px; color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .phase-badge {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .duration {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 600;
+    color: var(--c);
+    background: var(--cdim);
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    padding: 6px 14px; border-radius: 8px;
+    display: inline-block; white-space: nowrap;
+  }
+  .level-dot {
+    display: flex; gap: 4px; justify-content: flex-end;
+    margin-top: 8px;
+  }
+  .level-dot span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--c);
+  }
+  .level-dot span.empty {
+    background: transparent;
+    border: 1px solid var(--c);
+    opacity: 0.35;
+  }
+
+  /* ── TOPICS GRID ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: default;
+  }
+
+  .topic-card:hover {
+    border-color: color-mix(in srgb, var(--c) 45%, transparent);
+    transform: translateY(-2px);
+    z-index: 2;
+  }
+
+  .topic-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .topic-card:hover::after { opacity: 1; }
+
+  .topic-card .t-icon {
+    font-size: 22px; margin-bottom: 10px; display: block;
+  }
+  .topic-card .t-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--c);
+    margin-bottom: 6px;
+  }
+  .topic-card .t-items {
+    list-style: none;
+    font-size: 12px; color: var(--muted);
+    line-height: 1.7;
+  }
+  .topic-card .t-items li::before {
+    content: '›  '; color: var(--c); opacity: 0.6;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── PROJECT CARD ── */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 20px 28px;
+    border-radius: 0 0 16px 16px;
+    display: flex; align-items: center;
+    gap: 20px; flex-wrap: wrap;
+  }
+
+  .project-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--c);
+    opacity: 0.7;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .project-items {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+
+  .project-tag {
+    font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 6px;
+    background: var(--cdim);
+    border: 1px solid color-mix(in srgb, var(--c) 25%, transparent);
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  /* ── MILESTONE STRIP ── */
+  .milestone {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 16px 28px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; color: var(--muted);
+  }
+
+  .milestone .check {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--c); color: #000;
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Round corners on grouped elements */
+  .phase-group > .phase-header             { border-radius: 16px 16px 0 0; }
+  .phase-group > .topics-grid .topic-card  { border-radius: 0; }
+  .phase-group > .project-card             { border-radius: 0; }
+  .phase-group > .milestone:last-child     { border-radius: 0 0 16px 16px; }
+
+  /* ── TIMELINE DIVIDER ── */
+  .timeline-node {
+    display: flex; flex-direction: column;
+    align-items: center; padding: 0;
+    margin: 4px 0;
+  }
+
+  .node-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--c);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 600;
+    color: var(--c);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--c) 30%, transparent);
+    z-index: 2; position: relative;
+    margin: 6px 0;
+  }
+
+  .node-line {
+    width: 1px; height: 32px;
+    background: linear-gradient(to bottom, var(--c), transparent);
+    opacity: 0.25;
+  }
+
+  /* ── TIPS ROW ── */
+  .tips-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin-top: 48px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .tips-row.visible { opacity: 1; transform: translateY(0); }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px 22px;
+  }
+  .tip-card:first-child { border-radius: 12px 0 0 12px; }
+  .tip-card:last-child  { border-radius: 0 12px 12px 0; }
+
+  .tip-card .tip-icon {
+    font-size: 26px; margin-bottom: 12px; display: block;
+  }
+  .tip-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 8px; color: var(--text);
+  }
+  .tip-card p {
+    font-size: 12.5px; color: var(--muted); line-height: 1.65;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+  }
+  .footer p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    color: var(--muted); text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PHASE COLOR VARS ── */
+  .ph-html  { --c: var(--html);  --cdim: var(--html-dim); }
+  .ph-css   { --c: var(--css);   --cdim: var(--css-dim); }
+  .ph-js    { --c: var(--js);    --cdim: var(--js-dim); }
+  .ph-react { --c: var(--react); --cdim: var(--react-dim); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .phase-header { grid-template-columns: auto 1fr; }
+    .phase-badge  { display: none; }
+    .topics-grid  { grid-template-columns: 1fr 1fr; }
+    .tips-row     { grid-template-columns: 1fr; }
+    .tip-card:first-child { border-radius: 12px 12px 0 0; }
+    .tip-card:last-child  { border-radius: 0 0 12px 12px; }
+    .hero-stats   { flex-direction: column; align-items: center; }
+    .stat { border-radius: 8px !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Learning Roadmap 2025</div>
+  <h1>
+    <span class="html">HTML</span> ›
+    <span class="css">CSS</span> ›
+    <span class="js">JavaScript</span> ›
+    <span class="react">React</span>
+  </h1>
+  <p>Your complete path from absolute zero to building professional web applications — step by step, no experience required.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num" style="color:var(--html)">4</span>
+      <span class="stat-lbl">Phases</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" style="color:var(--css)">12–20</span>
+      <span class="stat-lbl">Months</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" style="color:var(--js)">1hr+</span>
+      <span class="stat-lbl">Daily practice</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" style="color:var(--react)">∞</span>
+      <span class="stat-lbl">Possibilities</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════
+       PHASE 1 — HTML
+  ═══════════════════════════════════════════════════ -->
+  <div class="phase ph-html" data-phase>
+    <div class="phase-group">
+
+      <div class="phase-header">
+        <div class="phase-num">01</div>
+        <div class="phase-title-block">
+          <span class="eyebrow">Phase 01 — Foundation</span>
+          <h2>HTML — Structure the Web</h2>
+          <p class="subtitle">Learn to build the skeleton of every website. No prior experience needed.</p>
+        </div>
+        <div class="phase-badge">
+          <div class="duration">2 – 4 weeks</div>
+          <div class="level-dot">
+            <span></span><span class="empty"></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-card">
+          <span class="t-icon">🏗️</span>
+          <div class="t-title">Document Basics</div>
+          <ul class="t-items">
+            <li>DOCTYPE & html tag</li>
+            <li>head vs body</li>
+            <li>meta tags & title</li>
+            <li>Character encoding</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📝</span>
+          <div class="t-title">Text & Lists</div>
+          <ul class="t-items">
+            <li>Headings h1–h6</li>
+            <li>Paragraphs & spans</li>
+            <li>Bold, italic, mark</li>
+            <li>Ordered & unordered lists</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🔗</span>
+          <div class="t-title">Links & Media</div>
+          <ul class="t-items">
+            <li>Anchor tags & href</li>
+            <li>Images with alt text</li>
+            <li>Video & audio</li>
+            <li>iframes & embeds</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📋</span>
+          <div class="t-title">Forms & Tables</div>
+          <ul class="t-items">
+            <li>All input types</li>
+            <li>Labels & fieldsets</li>
+            <li>Table structure</li>
+            <li>Form validation attrs</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🧩</span>
+          <div class="t-title">Semantic HTML5</div>
+          <ul class="t-items">
+            <li>header, nav, main</li>
+            <li>section, article, aside</li>
+            <li>footer, figure, time</li>
+            <li>Why semantics matter</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">♿</span>
+          <div class="t-title">Accessibility</div>
+          <ul class="t-items">
+            <li>ARIA roles & labels</li>
+            <li>tabindex navigation</li>
+            <li>Skip links</li>
+            <li>Screen reader basics</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-label">🔨 Build Projects</span>
+        <div class="project-items">
+          <span class="project-tag">Personal Bio Page</span>
+          <span class="project-tag">Resume / CV</span>
+          <span class="project-tag">Restaurant Menu</span>
+          <span class="project-tag">Contact Form</span>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <span class="check">✓</span>
+        <strong>Milestone:</strong>&nbsp; You can build complete, well-structured HTML documents with forms, tables, semantic tags, and proper accessibility.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Connector -->
+  <div class="timeline-node ph-css" data-phase>
+    <div class="node-line" style="background: linear-gradient(to bottom, var(--html), var(--css)); opacity:0.3;"></div>
+    <div class="node-circle" style="--c: var(--css)">▼</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       PHASE 2 — CSS
+  ═══════════════════════════════════════════════════ -->
+  <div class="phase ph-css" data-phase>
+    <div class="phase-group">
+
+      <div class="phase-header">
+        <div class="phase-num">02</div>
+        <div class="phase-title-block">
+          <span class="eyebrow">Phase 02 — Styling</span>
+          <h2>CSS — Design & Layout</h2>
+          <p class="subtitle">Transform bare HTML into beautiful, responsive interfaces that look great on all devices.</p>
+        </div>
+        <div class="phase-badge">
+          <div class="duration">4 – 6 weeks</div>
+          <div class="level-dot">
+            <span></span><span></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-card">
+          <span class="t-icon">🎯</span>
+          <div class="t-title">Selectors & Cascade</div>
+          <ul class="t-items">
+            <li>Element, class, ID</li>
+            <li>Pseudo-classes & elements</li>
+            <li>Specificity rules</li>
+            <li>CSS custom properties</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🎨</span>
+          <div class="t-title">Colors & Typography</div>
+          <ul class="t-items">
+            <li>Color systems (hex, rgb, hsl)</li>
+            <li>Google Fonts integration</li>
+            <li>Font size, weight, spacing</li>
+            <li>Gradients & text-shadow</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📦</span>
+          <div class="t-title">The Box Model</div>
+          <ul class="t-items">
+            <li>Margin, border, padding</li>
+            <li>box-sizing: border-box</li>
+            <li>Width, height, overflow</li>
+            <li>Display values</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🧱</span>
+          <div class="t-title">Flexbox</div>
+          <ul class="t-items">
+            <li>flex-direction & wrap</li>
+            <li>justify-content & align-items</li>
+            <li>flex-grow, shrink, basis</li>
+            <li>Centering anything</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">⚡</span>
+          <div class="t-title">CSS Grid</div>
+          <ul class="t-items">
+            <li>grid-template-columns</li>
+            <li>Grid areas & naming</li>
+            <li>auto-fill / minmax</li>
+            <li>Spanning rows & columns</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📱</span>
+          <div class="t-title">Responsive Design</div>
+          <ul class="t-items">
+            <li>Mobile-first approach</li>
+            <li>Media queries</li>
+            <li>rem, em, vw, vh units</li>
+            <li>Fluid images & typography</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📍</span>
+          <div class="t-title">Positioning</div>
+          <ul class="t-items">
+            <li>relative, absolute, fixed</li>
+            <li>sticky positioning</li>
+            <li>z-index stacking</li>
+            <li>Transform: translate</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">✨</span>
+          <div class="t-title">Animations</div>
+          <ul class="t-items">
+            <li>transition property</li>
+            <li>@keyframes & animation</li>
+            <li>transform: scale, rotate</li>
+            <li>hover & focus effects</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-label">🔨 Build Projects</span>
+        <div class="project-items">
+          <span class="project-tag">Portfolio Homepage</span>
+          <span class="project-tag">Pricing Cards</span>
+          <span class="project-tag">Animated Landing Page</span>
+          <span class="project-tag">Responsive Blog Layout</span>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <span class="check">✓</span>
+        <strong>Milestone:</strong>&nbsp; You can build pixel-perfect, fully responsive layouts using Flexbox & Grid, with smooth animations that look professional.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Connector -->
+  <div class="timeline-node ph-js" data-phase>
+    <div class="node-line" style="background: linear-gradient(to bottom, var(--css), var(--js)); opacity:0.3;"></div>
+    <div class="node-circle" style="--c: var(--js)">▼</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       PHASE 3 — JAVASCRIPT
+  ═══════════════════════════════════════════════════ -->
+  <div class="phase ph-js" data-phase>
+    <div class="phase-group">
+
+      <div class="phase-header">
+        <div class="phase-num">03</div>
+        <div class="phase-title-block">
+          <span class="eyebrow">Phase 03 — Logic & Interactivity</span>
+          <h2>JavaScript — Bring Pages to Life</h2>
+          <p class="subtitle">Add real logic, interactivity, and data handling. This is where web pages become web apps.</p>
+        </div>
+        <div class="phase-badge">
+          <div class="duration">8 – 12 weeks</div>
+          <div class="level-dot">
+            <span></span><span></span><span></span><span class="empty"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-card">
+          <span class="t-icon">📦</span>
+          <div class="t-title">Variables & Types</div>
+          <ul class="t-items">
+            <li>const, let (avoid var)</li>
+            <li>String, Number, Boolean</li>
+            <li>null vs undefined</li>
+            <li>typeof & type coercion</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">⚙️</span>
+          <div class="t-title">Control Flow</div>
+          <ul class="t-items">
+            <li>if / else if / else</li>
+            <li>switch statement</li>
+            <li>Ternary operator</li>
+            <li>for, while, for...of</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🔧</span>
+          <div class="t-title">Functions</div>
+          <ul class="t-items">
+            <li>Declaration & expression</li>
+            <li>Arrow functions</li>
+            <li>Default & rest params</li>
+            <li>Closures & scope</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🗃️</span>
+          <div class="t-title">Arrays & Objects</div>
+          <ul class="t-items">
+            <li>map, filter, reduce</li>
+            <li>Destructuring & spread</li>
+            <li>Object methods & JSON</li>
+            <li>Optional chaining ?.</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🌐</span>
+          <div class="t-title">The DOM</div>
+          <ul class="t-items">
+            <li>querySelector & all</li>
+            <li>createElement & append</li>
+            <li>classList & attributes</li>
+            <li>Modifying styles & HTML</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🖱️</span>
+          <div class="t-title">Events</div>
+          <ul class="t-items">
+            <li>addEventListener</li>
+            <li>Mouse, keyboard, form</li>
+            <li>Event delegation</li>
+            <li>preventDefault & stopProp</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🚀</span>
+          <div class="t-title">ES6+ Modern JS</div>
+          <ul class="t-items">
+            <li>Template literals</li>
+            <li>Modules (import/export)</li>
+            <li>Classes & inheritance</li>
+            <li>Symbol & iterators</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">⏳</span>
+          <div class="t-title">Async JavaScript</div>
+          <ul class="t-items">
+            <li>Promises (.then/.catch)</li>
+            <li>async / await</li>
+            <li>Fetch API & REST calls</li>
+            <li>LocalStorage & JSON</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🐛</span>
+          <div class="t-title">Debugging</div>
+          <ul class="t-items">
+            <li>Chrome DevTools</li>
+            <li>console methods</li>
+            <li>Breakpoints & debugger</li>
+            <li>Error types & handling</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-label">🔨 Build Projects</span>
+        <div class="project-items">
+          <span class="project-tag">To-Do List App</span>
+          <span class="project-tag">Weather App (API)</span>
+          <span class="project-tag">Quiz Game</span>
+          <span class="project-tag">Budget Tracker</span>
+          <span class="project-tag">Movie Search App</span>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <span class="check">✓</span>
+        <strong>Milestone:</strong>&nbsp; You can build interactive apps with real data from APIs, handle user events, manage state with arrays/objects, and persist data with localStorage.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Connector -->
+  <div class="timeline-node ph-react" data-phase>
+    <div class="node-line" style="background: linear-gradient(to bottom, var(--js), var(--react)); opacity:0.3;"></div>
+    <div class="node-circle" style="--c: var(--react)">▼</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       PHASE 4 — REACT
+  ═══════════════════════════════════════════════════ -->
+  <div class="phase ph-react" data-phase>
+    <div class="phase-group">
+
+      <div class="phase-header">
+        <div class="phase-num">04</div>
+        <div class="phase-title-block">
+          <span class="eyebrow">Phase 04 — Framework Mastery</span>
+          <h2>React — Build Real Applications</h2>
+          <p class="subtitle">The world's most popular UI library. Master components, state, hooks, and the full React ecosystem.</p>
+        </div>
+        <div class="phase-badge">
+          <div class="duration">10 – 16 weeks</div>
+          <div class="level-dot">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-card">
+          <span class="t-icon">⚛️</span>
+          <div class="t-title">React Fundamentals</div>
+          <ul class="t-items">
+            <li>What is React & why</li>
+            <li>JSX syntax & rules</li>
+            <li>Vite project setup</li>
+            <li>React DevTools</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🧩</span>
+          <div class="t-title">Components</div>
+          <ul class="t-items">
+            <li>Functional components</li>
+            <li>Props & prop types</li>
+            <li>Component composition</li>
+            <li>Children prop</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🔄</span>
+          <div class="t-title">State & Events</div>
+          <ul class="t-items">
+            <li>useState hook</li>
+            <li>Handling form inputs</li>
+            <li>Lifting state up</li>
+            <li>Controlled components</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📋</span>
+          <div class="t-title">Lists & Rendering</div>
+          <ul class="t-items">
+            <li>Rendering arrays</li>
+            <li>key prop importance</li>
+            <li>Conditional rendering</li>
+            <li>Short-circuit patterns</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🪝</span>
+          <div class="t-title">Core Hooks</div>
+          <ul class="t-items">
+            <li>useEffect — side effects</li>
+            <li>useRef — DOM access</li>
+            <li>useContext — global state</li>
+            <li>useMemo, useCallback</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🌍</span>
+          <div class="t-title">Data Fetching</div>
+          <ul class="t-items">
+            <li>fetch in useEffect</li>
+            <li>Loading & error states</li>
+            <li>React Query (TanStack)</li>
+            <li>Custom hooks for APIs</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🗺️</span>
+          <div class="t-title">React Router</div>
+          <ul class="t-items">
+            <li>BrowserRouter setup</li>
+            <li>Route & Link components</li>
+            <li>Dynamic routes & params</li>
+            <li>Protected / private routes</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🏪</span>
+          <div class="t-title">State Management</div>
+          <ul class="t-items">
+            <li>Context API deep dive</li>
+            <li>useReducer hook</li>
+            <li>Zustand (lightweight)</li>
+            <li>When to use which</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">💅</span>
+          <div class="t-title">Styling in React</div>
+          <ul class="t-items">
+            <li>CSS Modules</li>
+            <li>Tailwind CSS</li>
+            <li>Styled-components</li>
+            <li>Component libraries (shadcn)</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">📝</span>
+          <div class="t-title">Forms & Validation</div>
+          <ul class="t-items">
+            <li>React Hook Form</li>
+            <li>Zod validation schema</li>
+            <li>Error messages & UX</li>
+            <li>Form submission patterns</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">⚡</span>
+          <div class="t-title">Performance</div>
+          <ul class="t-items">
+            <li>React.memo</li>
+            <li>useMemo & useCallback</li>
+            <li>Code splitting & lazy</li>
+            <li>Suspense boundaries</li>
+          </ul>
+        </div>
+        <div class="topic-card">
+          <span class="t-icon">🧪</span>
+          <div class="t-title">Testing & Deploy</div>
+          <ul class="t-items">
+            <li>Vitest unit tests</li>
+            <li>React Testing Library</li>
+            <li>Deploy to Vercel / Netlify</li>
+            <li>Environment variables</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-label">🔨 Build Projects</span>
+        <div class="project-items">
+          <span class="project-tag">Full Portfolio Site</span>
+          <span class="project-tag">E-commerce Store</span>
+          <span class="project-tag">Social Dashboard</span>
+          <span class="project-tag">Task Manager (auth)</span>
+          <span class="project-tag">Real-time Chat App</span>
+        </div>
+      </div>
+
+      <div class="milestone">
+        <span class="check">✓</span>
+        <strong>Milestone:</strong>&nbsp; You can build, style, and deploy full multi-page React applications with state management, API integration, routing, and proper testing. <strong style="color:var(--react)">You're job-ready. 🎉</strong>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TIPS ROW ─── -->
+  <div class="tips-row" data-tips>
+    <div class="tip-card">
+      <span class="tip-icon">⏱️</span>
+      <h4>Recommended Daily Practice</h4>
+      <p>1–2 hours of focused practice every day beats 10 hours on weekends. Consistency is everything. Build something every single day — even something tiny.</p>
+    </div>
+    <div class="tip-card">
+      <span class="tip-icon">🔁</span>
+      <h4>Don't Skip Phases</h4>
+      <p>Jumping straight to React without solid HTML/CSS/JS foundations is the #1 reason beginners struggle. Master each phase before moving on — the next phase will feel natural.</p>
+    </div>
+    <div class="tip-card">
+      <span class="tip-icon">🤝</span>
+      <h4>Learn Together</h4>
+      <p>Share your progress with your colleagues. Code review each other's work, build pair projects, and teach what you learn. Teaching accelerates your own understanding massively.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>Web Development Mastery Roadmap &nbsp;·&nbsp; HTML › CSS › JavaScript › React &nbsp;·&nbsp; Instructor: Richard Odoom</p>
+</footer>
+
+<script>
+  // Scroll-triggered reveal animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('[data-phase], [data-tips]').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Stagger the phase reveal slightly
+  document.querySelectorAll('[data-phase]').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.05}s`;
+  });
+</script>
+</body>
+</html>
